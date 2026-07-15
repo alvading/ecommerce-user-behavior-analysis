@@ -6,6 +6,68 @@
 This file records material project changes, decisions, validation evidence,
 and next actions. New entries should be added in reverse chronological order.
 
+## 2026-07-15——主分支换题重构 | Main-branch project refactor
+
+### 目标 | Objective
+
+在保留 Git 历史的前提下，将主分支从旧 UserBehavior 日志分析完整切换为母婴
+交易分析，避免招聘方看到两套互相冲突的字段和业务口径。
+
+Refactor the main branch from the old UserBehavior event-log analysis to the
+maternal and infant transaction project while preserving Git history and
+removing conflicting schemas and metrics from the recruiter-facing branch.
+
+### 保留 | Retained
+
+- Git 历史与仓库配置；
+- 双语维护规范；
+- 分析记录和运行记录框架；
+- 工作日志与第 1 课学习记录。
+
+- Git history and repository configuration;
+- bilingual maintenance rules;
+- analysis/run-record framework;
+- work log and Lesson 1 learning evidence.
+
+### 删除或重写 | Removed or rewritten
+
+- 删除所有依赖 `behavior_type`、`pv`、`fav`、`cart` 和旧时间窗口的 SQL；
+- 重写 README、路线图、指标字典、项目记录、复现手册和数据说明；
+- 新 SQL 目录只保留教学骨架，等待学习者逐课编写和验证查询；
+- 旧项目仍可从提交 `9908ed1` 及更早 Git 历史中恢复。
+
+- Removed SQL tied to `behavior_type`, `pv`, `fav`, `cart`, and the old time
+  window;
+- rewrote the README, roadmap, metric dictionary, notes, runbook, and data
+  guidance;
+- retained only teaching placeholders in SQL until learner validation;
+- the old project remains recoverable from commit `9908ed1` and earlier history.
+
+## 2026-07-15——切换至母婴购物数据集 | Switched to maternal and infant dataset
+
+### 变更 | Change
+
+为便于 SQL 教学和个人电脑反复练习，项目主数据源切换为天池数据集 45“母婴购物
+数据集”。原 3.4 GB UserBehavior 数据保留为后续进阶项目，不再作为当前第一
+项目的数据源。
+
+To support guided SQL learning and repeatable local practice, the primary
+dataset was changed to Tianchi Dataset 45, the maternal and infant shopping
+dataset. The original 3.4 GB UserBehavior dataset is retained for a later
+advanced project.
+
+### 已核验 | Verified
+
+- 婴儿信息文件：954 个物理行、953 条数据、约 20 KB；
+- 交易历史文件：29,972 个物理行、29,971 条数据、约 8.4 MB；
+- 两个文件均包含表头，并通过 `user_id` 关联；
+- 创建双语第 1 课记录 `docs/lessons/01_dataset_and_schema.md`。
+
+- Baby information: 954 physical rows, 953 data rows, approximately 20 KB;
+- trade history: 29,972 physical rows, 29,971 data rows, approximately 8.4 MB;
+- both files include headers and join through `user_id`;
+- created bilingual Lesson 1 at `docs/lessons/01_dataset_and_schema.md`.
+
 ## 2026-07-15——仓库双语化 | Repository bilingual conversion
 
 ### 目标 | Objective

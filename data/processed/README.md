@@ -1,13 +1,12 @@
 # 处理后数据 | Processed Data
 
-生成的数据摘录保存在本地此目录，并默认被 Git 排除。供看板使用的小型、聚合、
-非敏感结果文件，后续可以通过 `.gitignore` 的明确例外规则加入仓库。
+本目录默认不提交生成数据。后续只有经过聚合、体积较小、可用于 Power BI 或网站
+展示且不含敏感信息的结果，才会通过明确的 Git 例外规则加入仓库。
 
-Generated extracts are stored locally here and excluded from Git. Small,
-aggregated, non-sensitive result files intended for the dashboard may later be
-added through an explicit `.gitignore` exception.
+Generated data is excluded by default. Only small, aggregated, non-sensitive
+outputs intended for Power BI or the portfolio website may later be included
+through an explicit Git exception.
 
-当前 MySQL 分析表是处理后数据的唯一事实来源：
+在第 3 课完成前，处理后事实表和维度表的名称尚未最终确定。
 
-The MySQL analytical table is the current source of truth:
-`ecommerce_analysis.user_behavior`.
+Processed fact and dimension table names remain provisional until Lesson 3.

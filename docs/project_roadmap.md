@@ -1,162 +1,88 @@
 # 项目路线图 | Project Roadmap
 
-## 中文概览
+## 目标 | Goal
 
-项目目标是把阿里巴巴天池用户行为数据集建设成可用于数据分析岗位求职的完整
-作品集，包含可复现的数据准备与 SQL 分析、统一指标口径、业务看板、分析报告、
-个人作品网站，以及所有决策和结果的追溯记录。
+在教师引导下，亲自完成一个可复现、可解释、可用于数据分析岗位求职的淘宝母婴
+交易分析项目，并将每一步的 SQL、验证结果、业务解读和作品成果以中英双语维护。
 
-项目分为七个阶段：
+Complete a reproducible and interview-ready Taobao maternal and infant
+transaction analysis project through guided SQL learning, with bilingual SQL,
+validation evidence, interpretation, dashboard, report, and website artifacts.
 
-1. 基础与可复现性：数据库、导入、环境手册和验证清单；
-2. 数据质量与分析数据集：时间异常、重复、空值、值域和层间对账；
-3. SQL 业务分析：KPI、行为、时间、漏斗、商品、复购、分群和有限窗口分析；
-4. 看板：受众、线框、页面、指标对账和展示材料；
-5. 分析报告：执行摘要、方法、发现、建议和技术附录；
-6. 作品网站：个人定位、案例页、看板/报告链接、部署和移动端检查；
-7. 面试准备：项目陈述、技术权衡、常见问题和简历描述。
+## 阶段与验收 | Phases and acceptance criteria
 
-每项分析只有同时具备业务问题、指标定义、数据来源、可执行 SQL、验证检查、
-保存结果、业务解读、限制说明、工作日志和 README 更新时，才算真正完成。
+### 阶段 1：数据认识与表结构 | Phase 1: Dataset and schema
 
-以下英文版本保留完整的阶段任务和验收标准。
+- [x] 下载并定位两个 CSV；
+- [x] 核验表头、样例和行数；
+- [x] 提交第一版字段类型判断；
+- [ ] 完成字段类型评审；
+- [ ] 学习者亲自编写 `CREATE TABLE`；
+- [ ] 说明主键、关联键和暂存/分析分层。
 
-## 1. 项目目标 | Project goal
+**验收：** 学习者能解释每个字段类型和键设计，而不只是运行现成代码。
 
-Build a job-ready data analytics portfolio project from the Alibaba
-Tianchi UserBehavior dataset. The final project will demonstrate:
+**Acceptance:** the learner can explain every type and key decision rather
+than only running prepared SQL.
 
-- reproducible data preparation and SQL analysis;
-- clear metric definitions and data-quality checks;
-- a business-oriented interactive dashboard;
-- a concise analytical report with actionable recommendations;
-- a personal portfolio website that presents the project to recruiters;
-- a traceable record of assumptions, decisions, queries, and outputs.
+### 阶段 2：导入与质量验证 | Phase 2: Import and validation
 
-## 2. 指导原则 | Guiding principles
+- [ ] 创建数据库和暂存表；
+- [ ] 导入两份 CSV 并对账物理行数；
+- [ ] 检查空值、重复、值域、日期和购买数量；
+- [ ] 验证 `user_id` 关联覆盖率和 `auction_id` 唯一性；
+- [ ] 保存双语运行记录。
 
-1. **Evidence before conclusions** — every reported number must be
-   reproducible from a versioned query or script.
-2. **One definition per metric** — KPI definitions live in the metric
-   dictionary and are reused in SQL, the dashboard, and the report.
-3. **Preserve raw data** — cleaning is performed downstream; the raw
-   staging layer is not overwritten.
-4. **Protect data integrity** — user journeys are sampled by user, not by
-   individual event row.
-5. **Document decisions** — material choices and validation results are
-   recorded in the work log.
-6. **Portfolio first** — every deliverable should be understandable to a
-   hiring manager without access to the local database.
+**验收：** 每条清洗规则都有查询证据，导入与源文件行数能够对账。
 
-## 3. 交付阶段 | Delivery phases
+### 阶段 3：清洗与建模 | Phase 3: Cleaning and modeling
 
-### 阶段 0——基础与可复现性 | Phase 0 — Foundation and reproducibility
+- [ ] 将原始日期安全转换为 `DATE`；
+- [ ] 处理或隔离异常生日、交易日期、性别和购买数量；
+- [ ] 创建婴儿维度表与交易事实表；
+- [ ] 增加必要索引；
+- [ ] 完成暂存层到分析层对账。
 
-- [x] Create and connect the GitHub repository.
-- [x] Record the dataset schema and project context.
-- [x] Preserve a staging-to-analytical data architecture.
-- [x] Locate and verify the local raw CSV path and file size.
-- [x] Add database setup and import SQL.
-- [x] Add an environment/setup guide.
-- [x] Add a repeatable validation checklist.
+**验收：** 分析表可重复生成，类型正确，排除记录全部可解释。
 
-**Exit criterion:** a new analyst can follow the documentation and recreate
-the analytical table from the public dataset. The instructions exist, but this
-criterion remains open until a clean rerun is captured in a run record.
+### 阶段 4：SQL 业务分析 | Phase 4: SQL analysis
 
-### 阶段 1——数据质量与分析数据集 | Phase 1 — Data quality and analytical dataset
+- [ ] 整体交易与销量 KPI；
+- [ ] 年、季度和月度趋势；
+- [ ] 一级类目与细分类目表现；
+- [ ] 用户购买频次与复购；
+- [ ] 婴儿年龄与性别分析；
+- [ ] 用户分层及业务建议。
 
-- [x] Define the valid observation window.
-- [x] Exclude out-of-window timestamps from the analytical layer.
-- [ ] Profile missing values, duplicates, invalid behavior types, and key
-  cardinalities.
-- [ ] Investigate excluded timestamp records and document the decision.
-- [ ] Create a reproducible user-level development sample if needed.
-- [ ] Add row-count reconciliation checks between layers.
+**验收：** 每项分析包含业务问题、口径、SQL、QA、真实结果、解读和限制。
 
-**Exit criterion:** data-cleaning rules are justified, coded, validated, and
-summarized in a data-quality report.
+### 阶段 5：Power BI 看板 | Phase 5: Power BI dashboard
 
-### 阶段 2——SQL 业务分析 | Phase 2 — SQL business analysis
+- [ ] 明确看板受众和业务决策；
+- [ ] 设计概览、趋势、品类、用户和母婴属性页面；
+- [ ] 将所有 KPI 与 SQL 对账；
+- [ ] 导出截图和看板说明。
 
-- [ ] Overall KPI and activity overview.
-- [ ] Behavior distribution and user engagement.
-- [ ] Conversion funnel (`pv`, `fav`, `cart`, `buy`).
-- [ ] Hourly and daily activity patterns.
-- [ ] Product/category performance.
-- [ ] Repeat-purchase and purchase-frequency analysis.
-- [ ] User segmentation (RFM or behavior-based segments).
-- [ ] Cohort/retention analysis where the nine-day window permits.
+### 阶段 6：报告与作品网站 | Phase 6: Report and website
 
-**Exit criterion:** each analytical question has a documented definition,
-versioned SQL, validated output, interpretation, and limitation.
+- [ ] 完成中英双语分析报告；
+- [ ] 建立响应式个人作品网站和项目案例页；
+- [ ] 展示问题、方法、关键发现、限制和建议；
+- [ ] 链接 GitHub、SQL、看板与报告；
+- [ ] 完成移动端和可访问性检查。
 
-### 阶段 3——看板 | Phase 3 — Dashboard
+### 阶段 7：面试准备 | Phase 7: Interview readiness
 
-- [ ] Define dashboard audience and decisions supported.
-- [ ] Create a dashboard wireframe and KPI specification.
-- [ ] Build an overview page, funnel page, time-pattern page, and user
-  segmentation page.
-- [ ] Validate every dashboard figure against SQL outputs.
-- [ ] Export screenshots and a dashboard walkthrough for GitHub.
+- [ ] 两分钟项目陈述；
+- [ ] SQL、数据质量和业务问题清单；
+- [ ] 关键技术权衡说明；
+- [ ] 中英文简历项目描述。
 
-**Exit criterion:** the dashboard tells a coherent business story and all
-displayed metrics reconcile with the SQL analysis.
+## 每项分析的完成标准 | Definition of done
 
-### 阶段 4——分析报告 | Phase 4 — Analytical report
+每项分析必须同时具有：业务问题、分析粒度、指标口径、来源与过滤、学习者执行的
+SQL、验证检查、保存结果、非因果业务解读、限制、工作日志和面试表达。
 
-- [ ] Write an executive summary.
-- [ ] Explain data, methods, and limitations.
-- [ ] Present findings with supporting charts.
-- [ ] Translate findings into prioritized business recommendations.
-- [ ] Add a technical appendix linking findings to source queries.
-
-**Exit criterion:** the report is recruiter-readable, evidence-backed, and
-available in both repository-friendly and shareable formats.
-
-### 阶段 5——作品网站 | Phase 5 — Portfolio website
-
-- [ ] Define personal positioning and site information architecture.
-- [ ] Build a responsive landing page and project case-study page.
-- [ ] Embed dashboard screenshots or a public dashboard where feasible.
-- [ ] Link the report, GitHub repository, and selected SQL examples.
-- [ ] Add deployment, accessibility, and mobile checks.
-
-**Exit criterion:** a recruiter can understand the business problem, method,
-key findings, and the author's contribution within a few minutes.
-
-### 阶段 6——面试准备 | Phase 6 — Interview readiness
-
-- [ ] Prepare a two-minute project pitch.
-- [ ] Document major trade-offs and technical decisions.
-- [ ] Prepare likely SQL, metric, data-quality, and business questions.
-- [ ] Add a concise resume-ready project description.
-
-## 4. 必需成果结构 | Required artifact structure
-
-```text
-data/                 # Data notices, schemas, and small safe samples only
-sql/                  # Setup, validation, cleaning, analysis, and QA queries
-notebooks/            # Optional Python EDA and chart generation
-dashboard/            # Dashboard specification, screenshots, and exports
-reports/              # Final analytical report and supporting assets
-website/              # Portfolio website source
-docs/                 # Roadmap, work log, metric dictionary, and decisions
-```
-
-Large raw data, database files, credentials, and machine-specific files must
-not be committed.
-
-## 5. 每项分析的完成标准 | Definition of done for every analysis
-
-An analysis item is complete only when it includes:
-
-1. business question;
-2. metric definition and grain;
-3. source table and filters;
-4. executable SQL or script;
-5. validation/reconciliation checks;
-6. saved result or summarized output;
-7. interpretation and business implication;
-8. limitations and caveats;
-9. work-log entry and README progress update.
+Every analysis requires a business question, grain, metric definition, source
+and filters, learner-executed SQL, validation, saved result, non-causal
+interpretation, limitations, work-log entry, and interview takeaway.

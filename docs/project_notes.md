@@ -1,39 +1,33 @@
 # 项目记录 | Project Notes
 
-## 观察窗口清洗结果 | Observation-window cleaning result
+## 当前数据源 | Current dataset
 
-历史记录：原始数据 100,150,807 行；分析层保留 100,095,231 行；排除
-55,576 行，占 0.0555%。分析时间范围为北京时间 2017-11-25 00:00:00 至
-2017-12-03 23:59:59。
+- 来源 / Source: [阿里云天池母婴购物数据集](https://tianchi.aliyun.com/dataset/45)
+- 本地目录 / Local directory: `../mum_baby/`
+- 婴儿信息 / Baby information: 953 data rows
+- 交易历史 / Trade history: 29,971 data rows
+- 关联字段 / Join key: `user_id`
 
-- Raw rows: 100,150,807
-- Analytical rows retained: 100,095,231
-- Rows excluded: 55,576
-- Exclusion rate: 0.0555%
-- Minimum analytical datetime: 2017-11-25 00:00:00
-- Maximum analytical datetime: 2017-12-03 23:59:59
+## 当前范围 | Current scope
 
-清洗规则：保留 2017-11-25 00:00:00（含）至 2017-12-04 00:00:00
-（不含）的记录。
+项目分析交易数量、购买件数、时间趋势、品类表现、用户购买频次、复购、用户分层，
+以及与婴儿年龄和性别相关的购买差异。
 
-Cleaning rule: retain records from 2017-11-25 00:00:00 inclusive to
-2017-12-04 00:00:00 exclusive.
+The project analyzes transaction counts, purchased units, time trends, category
+performance, purchase frequency, repeat purchase, customer segments, and
+purchase differences associated with baby age and gender.
 
-时间口径：北京时间（`UTC+8`）。SQL 使用固定 epoch 边界 `1511539200`
-（含）和 `1512316800`（不含）。
+## 明确限制 | Explicit limitations
 
-Time convention: China Standard Time (`UTC+8`). Fixed epoch boundaries are
-used in SQL: `1511539200` inclusive and `1512316800` exclusive.
+- 无价格字段，不能计算收入、GMV、客单价或利润；
+- 无浏览、收藏和加购记录，不能分析完整转化漏斗；
+- `auction_id` 的业务唯一性需由 SQL 验证；
+- 婴儿信息仅覆盖部分交易用户，关联覆盖率需实际计算；
+- 性别和生日来自用户填写，可能存在缺失、不真实或异常值。
 
-复现状态（2026-07-15）：原始 CSV 位于 `../UserBehavior.csv/UserBehavior.csv`，
-文件大小为 3,672,347,465 字节。外层 `UserBehavior.csv` 实际是目录，因此早期
-检查曾误判为空。目前历史结果尚未通过新版流程重新运行确认。
-
-Reproduction status (2026-07-15): the source CSV was located at
-`../UserBehavior.csv/UserBehavior.csv` and its size was verified as
-3,672,347,465 bytes. The outer `UserBehavior.csv` path is a directory, which
-caused an earlier size check to misidentify it as empty. The historical results
-have not yet been rerun through the newly versioned pipeline, and no
-command-line MySQL client is available in the current execution environment.
-Treat the values as prior recorded evidence until a new run record confirms
-them.
+- No price means no revenue, GMV, average-order-value, or profit metrics;
+- no browse, favorite, or cart events means no full conversion funnel;
+- the business uniqueness of `auction_id` requires SQL validation;
+- baby information covers only part of the trade users, so join coverage must
+  be measured;
+- user-provided gender and birthday values may be missing or inaccurate.

@@ -1,88 +1,47 @@
 # 环境设置与复现手册 | Setup and Reproduction Runbook
 
-## 目的 | Purpose
+## 当前环境 | Current environment
 
-本手册用于从阿里巴巴天池公开 UserBehavior CSV 重建 MySQL 分析层，并将环境
-设置、原始导入、验证、清洗和对账分开，以便审计每个报告结果。
+- MySQL 8.x；
+- Navicat 或支持 CSV 导入的 MySQL 客户端；
+- 本地源目录 `../mum_baby/`；
+- 数据库名将在第 1 课建表评审时由学习者确定。
 
-This runbook recreates the MySQL analytical layer from the public Alibaba
-Tianchi UserBehavior CSV. It separates setup, raw ingestion, validation,
-cleaning, and reconciliation so every reported result can be audited.
+- MySQL 8.x;
+- Navicat or another MySQL client with CSV import support;
+- local source directory `../mum_baby/`;
+- the learner will choose the database name during the Lesson 1 schema review.
 
-## 环境要求 | Requirements
+## 源文件 | Source files
 
-- MySQL 8.x，并为约一亿行数据和索引预留足够磁盘空间；
-- 支持 `LOAD DATA LOCAL INFILE` 的客户端，或 Navicat 导入向导；
-- 无表头的公开 `UserBehavior.csv`；
-- 所有时间分析将数据库会话时区设为 `+08:00`。
+| 文件 File | 表头 Header | 预期数据行 Expected data rows |
+|---|---|---:|
+| `(sample)sam_tianchi_mum_baby.csv` | `user_id,birthday,gender` | 953 |
+| `(sample)sam_tianchi_mum_baby_trade_history.csv` | `user_id,auction_id,cat_id,cat1,property,buy_mount,day` | 29,971 |
 
-- MySQL 8.x with enough disk space for roughly 100 million rows and indexes;
-- a client that supports `LOAD DATA LOCAL INFILE` (or Navicat's import wizard);
-- the public headerless `UserBehavior.csv` file;
-- database session time zone set to `+08:00` for all datetime analysis.
+## 计划执行顺序 | Planned execution order
 
-## 执行顺序 | Execution order
+1. 学习者完成表结构并解释字段类型；
+2. 创建数据库和原始暂存表；
+3. 在 Navicat 中按表头位置导入 CSV；
+4. 运行行数、空值、重复、值域和范围检查；
+5. 确认清洗规则后创建分析表；
+6. 对账源文件、暂存层和分析层；
+7. 为本次运行填写 `docs/run_records/TEMPLATE.md`。
 
-按以下英文编号步骤依次执行。每一步的输出都要保存在运行记录中；只有当对账状态
-为 `PASS` 且所有不一致计数为零时，才能继续业务分析。
+1. The learner completes and explains the schema;
+2. create the database and raw staging tables;
+3. import both CSV files in Navicat by header position;
+4. run volume, null, duplicate, domain, and range checks;
+5. create analytical tables only after cleaning rules are approved;
+6. reconcile source, staging, and analytical layers;
+7. complete `docs/run_records/TEMPLATE.md` for the run.
 
-1. Run `sql/00_setup/01_create_database_and_tables.sql`.
-2. Restore the raw CSV and record its provenance in a run record.
-3. Edit and run `sql/00_setup/02_import_raw_data.sql`, or import the five
-   columns through Navicat into `stg_user_behavior`.
-4. Run `sql/01_validation/01_initial_data_validation.sql` and save the output.
-5. Review invalid behaviors, duplicate events, and out-of-window rows before
-   approving the cleaning rule.
-6. Run `sql/02_cleaning/01_create_analytical_table.sql`.
-7. Run `sql/02_cleaning/02_reconcile_analytical_table.sql`.
-8. Continue only when reconciliation status is `PASS` and all mismatch counts
-   are zero.
+## 证据门槛 | Evidence gate
 
-## 导入说明 | Import notes
+在真实导入完成以前，不填写 KPI 数值；在行数和清洗对账通过以前，不开始业务
+结论；任何异常处理都必须保留排除数量和理由。
 
-CSV 无表头，字段顺序如下。使用 Navicat 时选择逗号分隔、换行分行、UTF-8
-编码，并按位置映射字段。导入时不要转换时间戳，暂存表必须保留原始整数。
-
-The CSV has no header and uses this order:
-
-```text
-userid,itemid,categoryid,behavior_type,behavior_timestamp
-```
-
-For Navicat, select comma as the field delimiter, newline as the row delimiter,
-UTF-8 as the encoding, and map fields by position. Do not transform timestamps
-during import: the staging table must retain the raw integer value.
-
-## 时间口径 | Time convention
-
-项目将事件时间戳解释为北京时间（`UTC+8`），并使用固定 epoch 值避免受机器
-默认时区影响。如果权威数据说明与此不符，必须记录依据、修改所有相关查询并重跑。
-
-The project interprets event timestamps in China Standard Time (`UTC+8`). The
-valid window is represented with fixed epoch values to avoid dependence on a
-machine's default time zone:
-
-- start: `1511539200` = `2017-11-25 00:00:00` UTC+8, inclusive;
-- end: `1512316800` = `2017-12-04 00:00:00` UTC+8, exclusive.
-
-If later evidence from the dataset publisher contradicts this convention, log
-the source and decision, revise all dependent queries, and rerun validation.
-
-## 必需证据 | Required evidence
-
-每次完整运行都应复制 `docs/run_records/TEMPLATE.md` 创建带日期的记录，填写数据
-来源、文件大小与校验和、工具版本、执行信息、验证结果、异常和输出位置。不得记录
-密码、连接字符串或其他凭据。
-
-For every complete run, create a dated copy of
-`docs/run_records/TEMPLATE.md`. Record:
-
-- dataset source, local file name, size, checksum, and retrieval date;
-- MySQL and client versions;
-- execution date and analyst;
-- row counts and validation results;
-- reconciliation result;
-- anomalies, decisions, and links to saved outputs.
-
-Do not paste passwords, connection strings, or other credentials into the
-record.
+Do not publish KPIs before the real import, do not interpret business results
+before reconciliation passes, and record the count and reason for every
+excluded anomaly.

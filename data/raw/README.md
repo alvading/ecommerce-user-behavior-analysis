@@ -1,21 +1,17 @@
 # 原始数据 | Raw Data
 
-下载公开的阿里巴巴天池 `UserBehavior.csv` 数据集，并可将其保存在此目录。
-原始 CSV 文件已被 Git 排除，不会上传到仓库。
+项目使用[阿里云天池母婴购物数据集](https://tianchi.aliyun.com/dataset/45)。源文件
+保存在仓库外部的 `../mum_baby/`，Git 不追踪 CSV。
 
-Download the public Alibaba Tianchi `UserBehavior.csv` dataset and optionally
-store it locally in this directory. Raw CSV files are excluded from Git.
+The project uses the [Alibaba Tianchi maternal and infant shopping dataset](https://tianchi.aliyun.com/dataset/45).
+Source files are stored outside the repository in `../mum_baby/`; CSV files are
+excluded from Git.
 
-预期字段如下，原始文件不含表头：
+| 文件 File | 数据行 Data rows |
+|---|---:|
+| `(sample)sam_tianchi_mum_baby.csv` | 953 |
+| `(sample)sam_tianchi_mum_baby_trade_history.csv` | 29,971 |
 
-Expected columns; the raw file has no header row:
+不要提交原始数据、数据库文件、连接信息或凭据。
 
-```text
-userid,itemid,categoryid,behavior_type,behavior_timestamp
-```
-
-导入前，请在 `docs/run_records/` 中记录文件名、字节大小、行数、下载来源和
-校验和。请勿提交原始数据集。
-
-Before importing, record the file name, byte size, row count, download source,
-and checksum in `docs/run_records/`. Do not commit the raw dataset.
+Do not commit raw data, database files, connection details, or credentials.

@@ -1,68 +1,47 @@
 # 指标字典 | Metric Dictionary
 
-本文件是 SQL、看板、报告和作品网站中所有 KPI 口径的唯一事实来源。标记为
-**草稿 / Draft** 的数值必须在发布前完成实际运行和验证。
+本文件是 SQL、看板、报告和作品网站的统一口径来源。所有指标当前均为“待验证”，
+只有实际执行 SQL、完成对账并记录结果后才能发布。
 
-This is the single source of truth for KPI definitions used in SQL, dashboard
-pages, reports, and the portfolio website. Values marked **Draft** must be
-validated before publication.
+This is the shared definition source for SQL, dashboard, report, and website.
+All metrics remain pending until SQL execution and reconciliation are recorded.
 
-## 数据集约定 | Dataset conventions
+## 数据粒度 | Data grain
 
-| 项目 Item | 定义 Definition |
-|---|---|
-| Event grain | One row represents one user-product behavior event. |
-| Valid window | `2017-11-25 00:00:00` inclusive to `2017-12-04 00:00:00` exclusive. |
-| Valid behavior | `pv`, `fav`, `cart`, `buy`. |
-| Time zone | China Standard Time (`UTC+8`) is the documented project convention; revise and rerun if authoritative publisher evidence differs. |
-| Analytical table | `ecommerce_analysis.user_behavior`. |
-
-## 核心 KPI | Core KPIs
-
-| KPI | 定义 Definition | SQL 逻辑 SQL logic | 状态/限制 Status / caveat |
-|---|---|---|---|
-| Total events | Number of valid event rows. | `COUNT(*)` | Validated: 100,095,231 rows. |
-| Active users | Distinct users with at least one valid event. | `COUNT(DISTINCT userid)` | Draft; calculate and validate. |
-| Product reach | Distinct products with at least one valid event. | `COUNT(DISTINCT itemid)` | Draft. |
-| Category reach | Distinct categories with at least one valid event. | `COUNT(DISTINCT categoryid)` | Draft. |
-| Page views | Count of `pv` events. | `SUM(behavior_type = 'pv')` | Event count, not unique views. |
-| Favorites | Count of `fav` events. | `SUM(behavior_type = 'fav')` | Event count. |
-| Add-to-cart events | Count of `cart` events. | `SUM(behavior_type = 'cart')` | Event count. |
-| Purchase events | Count of `buy` events. | `SUM(behavior_type = 'buy')` | Treats each buy row as an event; quantity and revenue are unavailable. |
-| Purchasing users | Distinct users with at least one `buy` event. | `COUNT(DISTINCT CASE WHEN behavior_type='buy' THEN userid END)` | Draft. |
-| Event purchase rate | Purchase events divided by page-view events. | `buy_events / pv_events` | A behavior ratio, not a session conversion rate. |
-| User purchase conversion | Purchasing users divided by active users. | `purchasing_users / active_users` | Window-level user conversion. |
-| Cart-to-buy user conversion | Users with a buy divided by users with a cart event. | distinct-user ratio | Does not prove the purchased item was the carted item unless item-level matching is added. |
-| Average events per active user | Total events divided by active users. | `total_events / active_users` | Draft. |
-| Purchase frequency | Purchase events divided by purchasing users. | `buy_events / purchasing_users` | Event-based proxy because order IDs and quantities are unavailable. |
-| Repeat purchaser rate | Users with at least two buy events divided by purchasing users. | user-level buy count | Event-based proxy; multiple rows may not equal distinct orders. |
-
-## 用户分群 | User segments
-
-分群互斥，并按表中顺序优先判断。英文规则是 SQL 实现的正式名称，中文用于学习和
-业务沟通。
-
-Segments are mutually exclusive and evaluated in the listed priority order.
-
-| 分群 Segment | 规则 Rule | 解读 Interpretation |
+| 对象 Object | 暂定粒度 Provisional grain | 验证要求 Validation required |
 |---|---|---|
-| Repeat buyer | At least two `buy` events. | Highest observed purchase-event engagement; not a customer-value measure. |
-| Single buyer | Exactly one `buy` event. | Purchased once during the short window. |
-| Cart no buy | No `buy`, at least one `cart`. | Expressed stronger intent without an observed purchase. |
-| Favorite no cart or buy | No `buy` or `cart`, at least one `fav`. | Expressed interest without stronger observed action. |
-| Browser only | No `buy`, `cart`, or `fav`. | Only page-view behavior was observed. |
+| 婴儿信息 / Baby information | 每个 `user_id` 一行 | 检查重复用户 |
+| 交易历史 / Trade history | 每行一条交易或商品购买记录 | 验证 `auction_id` 唯一性与业务含义 |
+| 购买数量 / Purchase quantity | `buy_mount` | 检查零值、负值和极端值 |
 
-## 解读限制 | Interpretation constraints
+## 核心指标 | Core metrics
 
-以下限制必须同时出现在分析记录、看板说明和最终报告中：数据没有价格、收入、
-订单号、会话、渠道、促销、设备或人口属性；`buy` 只能称为购买事件；漏斗阶段
-不天然具有顺序；九天窗口不足以支持长期留存、季节性或生命周期价值结论。
+| 指标 Metric | 定义 Definition | SQL 逻辑 SQL logic | 状态/限制 Status / caveat |
+|---|---|---|---|
+| 交易记录数 / Trade rows | 清洗后交易表行数 | `COUNT(*)` | 待验证；不直接称为订单数 |
+| 购买用户数 / Purchasing users | 不重复交易用户数 | `COUNT(DISTINCT user_id)` | 待验证 |
+| 购买件数 / Units purchased | 有效 `buy_mount` 之和 | `SUM(buy_mount)` | 待验证异常数量 |
+| 人均购买件数 / Units per user | 购买件数 ÷ 购买用户数 | `SUM(buy_mount) / COUNT(DISTINCT user_id)` | 非客单价 |
+| 人均交易记录数 / Trade rows per user | 交易记录数 ÷ 购买用户数 | `COUNT(*) / COUNT(DISTINCT user_id)` | 不等同订单频次，需先确认粒度 |
+| 复购用户 / Repeat purchaser | 至少出现两条有效交易记录的用户 | 用户级 `COUNT(*) >= 2` | 代理指标；需验证交易粒度 |
+| 复购用户率 / Repeat purchaser rate | 复购用户 ÷ 购买用户 | 用户级比率 | 不等同长期留存率 |
+| 活跃类目数 / Active categories | 有交易记录的不同类目数 | `COUNT(DISTINCT cat1/cat_id)` | 分一级和细分类目 |
+| 有婴儿信息用户率 / Baby-info coverage | 能关联婴儿表的交易用户 ÷ 全部交易用户 | `LEFT JOIN` 后用户级比率 | 必须展示样本覆盖限制 |
 
-- The dataset contains no price, revenue, order ID, session ID, traffic source,
-  promotion, device, or user-demographic fields.
-- `buy` rows should be described as purchase events, not confirmed distinct
-  orders, until an order-level identifier is available.
-- Funnel stages are not automatically sequential. A strict path funnel needs
-  user/item/time ordering rules, while a broad funnel is only stage reach.
-- The nine-day observation window is suitable for short-term behavior analysis
-  but limits long-term retention, seasonality, and customer-lifetime claims.
+## 派生维度 | Derived dimensions
+
+| 维度 Dimension | 规则 Rule | 注意 Caveat |
+|---|---|---|
+| 交易日期 / Trade date | 将 `day` 的 `YYYYMMDD` 转为 `DATE` | 无效日期应保留并记录 |
+| 婴儿生日 / Baby birthday | 将 `birthday` 的 `YYYYMMDD` 转为 `DATE` | 用户填写值可能不真实 |
+| 交易时年龄 / Age at trade | 交易日期与生日之差 | 负年龄和异常高年龄需调查 |
+| 性别标签 / Gender label | 根据数据说明映射 0/1/2 | 发布前核对权威字段说明 |
+
+## 禁止使用的指标 | Unsupported metrics
+
+由于缺少必要字段，不得计算或声称以下指标：收入、GMV、利润、客单价、浏览转化率、
+加购转化率、广告 ROI、渠道归因和完整客户生命周期价值。
+
+Do not calculate or claim revenue, GMV, profit, average order value,
+browse/cart conversion, advertising ROI, channel attribution, or full customer
+lifetime value because the required fields do not exist.
