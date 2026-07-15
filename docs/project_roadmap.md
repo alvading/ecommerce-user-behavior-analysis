@@ -27,7 +27,9 @@ than only running prepared SQL.
 
 ### 阶段 2：导入与质量验证 | Phase 2: Import and validation
 
-- [ ] 创建数据库和暂存表；
+- [x] 创建并验证项目数据库；
+- [x] 创建两张暂存表；
+- [x] 导入两个 CSV 并完成源文件行数对账；
 - [ ] 导入两份 CSV 并对账物理行数；
 - [ ] 检查空值、重复、值域、日期和购买数量；
 - [ ] 验证 `user_id` 关联覆盖率和 `auction_id` 唯一性；

@@ -91,6 +91,13 @@ final solution yet.
 - [ ] 学习者编写并执行 `CREATE TABLE` / Learner writes and runs `CREATE TABLE`
 - [ ] 记录真实导入结果 / Record actual import results
 
+> 后续验证更新 / Later validation update: `stg_baby_raw.user_id` 在 953 条记录中
+> 无 NULL、无空字符串且无重复，因此已确认是清洗后维度表的主键候选。
+>
+> `stg_baby_raw.user_id` was later verified as non-null, non-blank, and unique
+> across 953 records, confirming it as the cleaned dimension's primary-key
+> candidate.
+
 ## 学习者第一版答案 | Learner's first answer
 
 | 表 Table | 字段 Field | 第一版类型 First type |
@@ -131,3 +138,65 @@ final solution yet.
   `INT UNSIGNED`; `BIGINT` is likely unnecessary.
 - `day` has no time-of-day component, so the analytical type should be `DATE`,
   not `TIMESTAMP`; staging may preserve it as `CHAR(8)`.
+
+## 学习者第二版建表草案 | Learner's second schema draft
+
+学习者已正确调整 `gender`、`property`、`buy_mount` 和 `day` 的主要类型，并
+开始编写 `dim_baby` 与 `fact_trade`。
+
+The learner corrected the main types for `gender`, `property`, `buy_mount`,
+and `day`, then drafted `dim_baby` and `fact_trade`.
+
+### 第二轮反馈 | Second review
+
+1. `user_id BIGINT UNSIGNED，` 使用了中文全角逗号，MySQL 会报语法错误；SQL
+   标点必须使用英文半角 `,`。
+2. 两张表尚未定义主键。`dim_baby.user_id` 是主键候选，但必须先验证源数据是否
+   重复；`auction_id` 也是候选，但其唯一性和业务粒度尚未验证。
+3. 分析层中的 `day` 建议改名为 `trade_date`，使含义明确并避免与日期函数混淆。
+4. `buy_mount` 是源文件字段名；分析层可改为更规范的 `buy_amount`，暂存层则保留
+   原名以便对账。
+5. 暂时不为 `fact_trade.user_id` 添加外键，因为婴儿信息只覆盖部分交易用户；
+   强制外键可能导致合法交易无法进入事实表。
+6. 在质量检查完成前，不急于添加 `NOT NULL`、`UNIQUE` 或 `CHECK` 约束；应先用
+   暂存表验证真实数据是否满足这些假设。
+
+1. The Chinese full-width comma after `UNSIGNED` causes a MySQL syntax error;
+   SQL punctuation must use the ASCII comma `,`.
+2. Neither table has a primary key. `dim_baby.user_id` and `auction_id` are
+   candidates, but source uniqueness must be validated first.
+3. Rename analytical `day` to `trade_date` for clarity.
+4. Preserve source `buy_mount` in staging, but analytical `buy_amount` is a
+   clearer name.
+5. Do not add a foreign key from trades to babies yet because baby information
+   covers only a subset of purchasing users.
+6. Validate the staging data before enforcing `NOT NULL`, `UNIQUE`, or `CHECK`.
+
+## 学习者第三版：原始暂存表 | Learner's third draft: raw staging
+
+学习者采纳了“暂存表先不设置主键”的设计，并为两个 CSV 编写了初版原始表。
+
+The learner adopted staging tables without primary keys and drafted raw tables
+for both CSV files.
+
+### 第三轮反馈 | Third review
+
+1. `std_trade_raw` 是拼写错误，应与另一张表统一为 `stg_trade_raw`；`stg` 是
+   staging（暂存）的常用缩写。
+2. 原始表字段名应与 CSV 表头保持一致：使用 `buy_mount` 和 `day`。规范化名称
+   `buy_amount`、`trade_date` 留给清洗后的事实表。
+3. 当前数字字段使用 `BIGINT`/`INT` 是“类型化暂存表”方案；如果源文件出现空白、
+   非数字或异常字符，导入可能失败或发生隐式转换。
+4. 对强调可追溯性的 `_raw` 落地层，更稳健的方案是除长文本外先使用 `VARCHAR`/
+   `CHAR` 保存原值，完成质量检查后再转换到强类型分析表。
+5. 原始表不添加主键、外键、唯一性或业务检查约束，以免在调查前丢失异常记录。
+
+1. Rename the typo `std_trade_raw` to `stg_trade_raw`; `stg` conventionally
+   means staging.
+2. Raw columns should match CSV headers: retain `buy_mount` and `day`; reserve
+   `buy_amount` and `trade_date` for the cleaned fact table.
+3. Numeric types create a typed staging layer but may reject or coerce malformed
+   source values.
+4. A traceable `_raw` landing layer is safer when raw values are stored as
+   `VARCHAR`/`CHAR` and converted only after validation.
+5. Do not add keys or business constraints to the raw tables.
