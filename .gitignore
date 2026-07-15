@@ -1,0 +1,24 @@
+# 原始数据与生成数据 | Raw and generated data
+data/raw/*
+!data/raw/README.md
+data/processed/*
+!data/processed/README.md
+*.csv
+*.tsv
+*.parquet
+*.db
+*.sqlite
+
+# 凭据与本地配置 | Credentials and local configuration
+.env
+.env.*
+!.env.example
+
+# Python 与笔记本 | Python / notebooks
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+
+# BI 与操作系统临时文件 | BI and operating-system temporary files
+~$*
+.DS_Store
