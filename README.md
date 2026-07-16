@@ -100,7 +100,8 @@ See [analysis results](docs/03_analysis_results.md).
     ├── 03_overview_kpis.sql
     ├── 04_customer_frequency.sql
     ├── 05_time_trends.sql
-    └── 06_category_analysis.sql
+    ├── 06_category_analysis.sql
+    └── 07_demographic_supplement.sql
 ```
 
 后续只在分析模块完成并验证后添加合并后的成品 SQL、最终报告和看板材料。课堂

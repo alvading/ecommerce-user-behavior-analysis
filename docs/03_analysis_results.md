@@ -154,3 +154,41 @@ all detailed categories, broadly resembling an 80/20 distribution while the
 low Top-10 share still indicates a substantial long tail. For
 `cat_id=50018831`, high-quantity rows contribute 87.13% of raw units, requiring
 particular caution when interpreting its raw-unit rank.
+
+## 6. 人口属性补充分析 | Demographic supplement
+
+婴儿信息只匹配 953 名用户和 956 条交易记录，即全部交易用户的 3.18%，因此本节
+仅描述匹配子样本。天池说明指出出生日期和性别由用户填写，可能不真实；本数据中
+交易相对出生日期的月份差为 -25 至 339。15 条记录早于设定的可能孕期范围，39
+条发生在出生 72 个月以后，合计占匹配交易的 5.65%。这些记录保留在原始模型中，
+但不纳入主要年龄阶段解释。
+
+Baby information matches only 953 users and 956 rows, or 3.18% of all
+purchasing users, so this section describes only the matched subsample. Tianchi
+notes that birth date and gender are user-entered and may be inaccurate. Months
+from birth range from -25 to 339; 15 rows precede the assumed plausible prenatal
+window and 39 occur at 72 months or later, together representing 5.65% of
+matched rows. They remain in the model but are excluded from the primary age
+interpretation.
+
+在 `-10` 至 `71` 个月的902条分析记录中，出生后0–11个月占比最高（34.26%）；
+12–23个月占21.62%，且敏感性口径每条平均1.70件，为各阶段最高。可能孕期购买
+占11.42%。这些阶段差异属于描述性结果，不能推广到全部交易用户。
+
+Within the 902-row analytical window from -10 to 71 months, age 0–11 months is
+the largest stage (34.26%). Age 12–23 months represents 21.62% and has the
+highest sensitivity average at 1.70 units per row. Possible prenatal purchases
+account for 11.42%. These are descriptive subsample results and are not
+generalizable to all purchasing users.
+
+男婴、女婴和未知性别分别占匹配用户的 51.31%、45.96% 和 2.73%。男女婴交易
+记录最多的一级品类均为 `50008168`，前三个主要品类也相同，整体品类构成相似。
+男婴敏感性口径每条1.58件、女婴1.28件，但受样本覆盖、字段可信度和商品信息
+缺失限制，不能据此推断性别造成购买量差异。
+
+Boys, girls, and unknown gender represent 51.31%, 45.96%, and 2.73% of matched
+users. `50008168` is the leading top-level category for both boys and girls,
+and their top three categories are the same, indicating broadly similar mixes.
+Sensitivity averages are 1.58 units per row for boys and 1.28 for girls, but
+coverage, field reliability, and missing product context prevent causal gender
+claims.
