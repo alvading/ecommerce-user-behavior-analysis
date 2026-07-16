@@ -114,3 +114,43 @@ Consequently, raw units grew 413.95% year over year while sensitivity units grew
 only 46.69%. The dashboard should show trade rows, raw units, and sensitivity
 units together, without labeling high-quantity rows as errors absent business
 evidence.
+
+## 5. 品类结构与增长 | Category structure and growth
+
+`cat1=50008168` 贡献 41.69% 的交易记录和 32.37% 的敏感性购买件数，是覆盖
+最广且表现最稳定的一级品类。原始件数最高的 `cat1=28` 有 52.15% 来自高数量
+记录；`cat1=50014815` 的对应比例更高达 56.81%，因此两者不能仅凭原始件数
+排名判断品类表现。数据没有提供品类名称映射，结论保留原始编码，不推测名称。
+
+`cat1=50008168` contributes 41.69% of trade rows and 32.37% of sensitivity
+units, making it the broadest and most stable top-level category. High-quantity
+rows supply 52.15% of raw units for `cat1=28` and 56.81% for
+`cat1=50014815`, so raw-unit ranking alone would misrepresent performance. As
+no category-name mapping is provided, findings retain source codes.
+
+2013→2014 年，`50008168` 增加 2,073 条交易记录，贡献整体交易行增量的
+39.33%；`28` 和 `50014815` 分别贡献 24.38% 和 17.57%。前三个一级品类合计
+贡献 81.28% 的交易行增长。`50022520` 自身增速最高（64.56%），但其绝对增量
+仅为 481 条，说明增长率与增长贡献需要同时评估。
+
+From 2013 to 2014, `50008168` added 2,073 rows and contributed 39.33% of total
+row growth; `28` and `50014815` contributed 24.38% and 17.57%. Together, the
+top three supplied 81.28% of growth. `50022520` had the highest category-level
+growth rate (64.56%) but added only 481 rows, demonstrating why rate and
+absolute contribution should be evaluated together.
+
+### 细分类目与长尾 | Detailed categories and long tail
+
+662 个 `cat_id` 均只对应一个 `cat1`。交易记录 Top 10 仅占 31.29%，敏感性件数
+Top 10 占 30.58%；两种口径都需要 123 个细分类目才能达到累计 80%。123 个占
+全部细分类目的 18.58%，接近二八分布，同时 Top 10 占比不高，体现出头部集中与
+长尾并存。`cat_id=50018831` 的高数量件数占自身原始件数 87.13%，其原始销量
+排名尤其需要谨慎解释。
+
+Each of the 662 `cat_id` values maps to one `cat1`. The Top 10 account for only
+31.29% of trade rows and 30.58% of sensitivity units; both measures require 123
+detailed categories to reach 80% cumulatively. Those 123 represent 18.58% of
+all detailed categories, broadly resembling an 80/20 distribution while the
+low Top-10 share still indicates a substantial long tail. For
+`cat_id=50018831`, high-quantity rows contribute 87.13% of raw units, requiring
+particular caution when interpreting its raw-unit rank.
