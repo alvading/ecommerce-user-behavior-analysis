@@ -6,12 +6,12 @@
 
 本项目基于[阿里云天池母婴购物数据集](https://tianchi.aliyun.com/dataset/45)，
 使用 MySQL 分析淘宝母婴商品的销售趋势、品类结构、用户购买频次与复购特征，
-并将最终成果整理为 Power BI 看板、双语分析报告和个人作品网站案例。
+并将最终成果整理为 HTML 交互看板、双语分析报告和个人作品网站案例。
 
 This MySQL portfolio project uses the
 [Alibaba Tianchi maternal and infant shopping dataset](https://tianchi.aliyun.com/dataset/45)
 to analyze sales trends, category structure, purchase frequency, and repeat
-purchase. Final deliverables will include a Power BI dashboard, bilingual
+purchase. Final deliverables will include an interactive HTML dashboard, bilingual
 report, and portfolio website case study.
 
 > **状态 / Status:** 数据模型完成，进入业务分析 / Analytical model complete; business analysis in progress
@@ -115,8 +115,8 @@ step-by-step outputs remain outside the public portfolio repository.
 
 - MySQL 9.7.1
 - Navicat
-- Power BI（计划 / planned）
-- HTML/CSS/JavaScript（作品网站 / portfolio website）
+- HTML/CSS/JavaScript（交互看板与作品网站 / interactive dashboard and portfolio site）
+- Apache ECharts（交互图表 / interactive charts，计划 / planned）
 
 ## 作者 | Author
 

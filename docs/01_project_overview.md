@@ -83,8 +83,8 @@ matched users, with explicit 3.18% coverage and selection-bias limitations.
   → 强类型事实表与维度表
   → KPI 与敏感性口径
   → 时间、品类、用户和补充属性分析
-  → Power BI 指标对账
-  → 报告、建议与作品网站
+  → HTML 交互看板指标对账
+  → 双语报告、建议与作品网站
 ```
 
 ## 5. 核心指标口径 | Core metric definitions
