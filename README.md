@@ -86,6 +86,13 @@ modeling decisions.
 
 See [analysis results](docs/03_analysis_results.md).
 
+完整的图文叙事、业务建议、限制与可复现性说明见
+[最终分析报告](docs/04_final_analysis_report.md)。
+
+See the [final illustrated analysis report](docs/04_final_analysis_report.md)
+for the complete narrative, recommendations, limitations, and reproducibility
+map.
+
 ## 仓库结构 | Repository structure
 
 ```text
@@ -93,7 +100,11 @@ See [analysis results](docs/03_analysis_results.md).
 ├── docs/
 │   ├── 01_project_overview.md
 │   ├── 02_data_quality_summary.md
-│   └── 03_analysis_results.md
+│   ├── 03_analysis_results.md
+│   └── 04_final_analysis_report.md
+├── assets/figures/
+├── data/
+│   └── pareto_category_segments.csv
 ├── sql/
 │   ├── 01_setup.sql
 │   ├── 02_model.sql

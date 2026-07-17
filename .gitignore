@@ -4,6 +4,7 @@ data/raw/*
 data/processed/*
 !data/processed/README.md
 *.csv
+!data/pareto_category_segments.csv
 *.tsv
 *.parquet
 *.db
