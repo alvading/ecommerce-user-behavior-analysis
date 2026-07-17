@@ -97,6 +97,12 @@ See the [final illustrated analysis report](docs/04_final_analysis_report.md)
 for the complete narrative, recommendations, limitations, and reproducibility
 map.
 
+后续看板、报告图表和个人作品网站统一遵循
+[视觉设计规范](docs/05_visual_design_system.md)。
+
+Future dashboards, report figures, and portfolio pages follow the
+[visual design system](docs/05_visual_design_system.md).
+
 ## 仓库结构 | Repository structure
 
 ```text
@@ -105,7 +111,8 @@ map.
 │   ├── 01_project_overview.md
 │   ├── 02_data_quality_summary.md
 │   ├── 03_analysis_results.md
-│   └── 04_final_analysis_report.md
+│   ├── 04_final_analysis_report.md
+│   └── 05_visual_design_system.md
 ├── assets/figures/
 ├── data/
 │   └── pareto_category_segments.csv
