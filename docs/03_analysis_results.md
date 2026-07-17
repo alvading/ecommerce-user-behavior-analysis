@@ -105,19 +105,20 @@ that the activity peak was not solely created by high-quantity rows.
 
 但当月原始 13,044 件中，6 条 `buy_amount >= 100` 的记录贡献 10,584 件，即
 81.14%；其中单条 10,000 件记录占当月总件数 76.66%。因此，11 月原始件数同比
-增长 413.95%，而敏感性件数同比仅增长 46.69%。看板与结论应同时展示交易记录、
-原始件数和敏感性件数，且不能在缺乏业务证据时把大数量记录直接认定为错误。
+增长 413.95%，而 `<100` 口径购买件数同比仅增长 46.69%。看板与结论应同时展示
+交易记录、原始件数和购买件数（单条记录 `<100`），且不能在缺乏业务证据时把
+大数量记录直接认定为错误。
 
 However, six rows with `buy_amount >= 100` contributed 10,584 of November's
 13,044 raw units, or 81.14%; one 10,000-unit row alone represented 76.66%.
-Consequently, raw units grew 413.95% year over year while sensitivity units grew
-only 46.69%. The dashboard should show trade rows, raw units, and sensitivity
-units together, without labeling high-quantity rows as errors absent business
-evidence.
+Consequently, raw units grew 413.95% year over year while units from rows below
+100 grew only 46.69%. The dashboard should show trade rows, raw units, and the
+`<100`-per-row view together, without labeling high-quantity rows as errors
+absent business evidence.
 
 ## 5. 品类结构与增长 | Category structure and growth
 
-`cat1=50008168` 贡献 41.69% 的交易记录和 32.37% 的敏感性购买件数，是覆盖
+`cat1=50008168` 贡献 41.69% 的交易记录和 32.37% 的 `<100` 口径购买件数，是覆盖
 最广且表现最稳定的一级品类。原始件数最高的 `cat1=28` 有 52.15% 来自高数量
 记录；`cat1=50014815` 的对应比例更高达 56.81%，因此两者不能仅凭原始件数
 排名判断品类表现。数据没有提供品类名称映射，结论保留原始编码，不推测名称。
@@ -141,14 +142,14 @@ absolute contribution should be evaluated together.
 
 ### 细分类目与长尾 | Detailed categories and long tail
 
-662 个 `cat_id` 均只对应一个 `cat1`。交易记录 Top 10 仅占 31.29%，敏感性件数
+662 个 `cat_id` 均只对应一个 `cat1`。交易记录 Top 10 仅占 31.29%，`<100` 口径
 Top 10 占 30.58%；两种口径都需要 123 个细分类目才能达到累计 80%。123 个占
 全部细分类目的 18.58%，接近二八分布，同时 Top 10 占比不高，体现出头部集中与
 长尾并存。`cat_id=50018831` 的高数量件数占自身原始件数 87.13%，其原始销量
 排名尤其需要谨慎解释。
 
 Each of the 662 `cat_id` values maps to one `cat1`. The Top 10 account for only
-31.29% of trade rows and 30.58% of sensitivity units; both measures require 123
+31.29% of trade rows and 30.58% of units from rows below 100; both measures require 123
 detailed categories to reach 80% cumulatively. Those 123 represent 18.58% of
 all detailed categories, broadly resembling an 80/20 distribution while the
 low Top-10 share still indicates a substantial long tail. For

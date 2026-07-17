@@ -63,7 +63,7 @@ const copy = {
     chartHint: "切换年份和指标，查看原始销量与敏感性口径的差异。",
     anomaly: "11月的真实高峰，被一条10,000件记录进一步放大",
     anomalyBody:
-      "2014年11月交易记录和敏感性件数均为样本期第一；但原始13,044件中，单条10,000件记录占76.66%。",
+      "2014年11月交易记录和单条<100件口径的购买件数均为样本期第一；但原始13,044件中，单条10,000件记录占76.66%。",
     question3: "03 · 哪些品类推动增长？",
     heading3: "核心品类稳定，销量排名却会被大数量记录改变",
     body3:
@@ -94,7 +94,7 @@ const copy = {
     units: "件",
     rows: "交易记录",
     raw: "原始件数",
-    safe: "敏感性件数",
+    safe: "购买件数（单条<100）",
     language: "EN",
   },
   en: {
@@ -119,7 +119,7 @@ const copy = {
     chartHint: "Switch year and metric to compare raw units with the sensitivity view.",
     anomaly: "A real November peak, amplified by one 10,000-unit row",
     anomalyBody:
-      "November 2014 ranks first for both trade rows and sensitivity units, yet one 10,000-unit row represents 76.66% of its 13,044 raw units.",
+      "November 2014 ranks first for both trade rows and units from rows below 100, yet one 10,000-unit row represents 76.66% of its 13,044 raw units.",
     question3: "03 · Which categories drove growth?",
     heading3: "The core category is stable, while raw-unit ranks are not",
     body3:
@@ -150,7 +150,7 @@ const copy = {
     units: "units",
     rows: "Trade rows",
     raw: "Raw units",
-    safe: "Sensitivity units",
+    safe: "Units from rows <100",
     language: "中",
   },
 };
@@ -259,7 +259,7 @@ export default function Home() {
             <div className="stat-strip">
               <article><span>2014 TRADE ROWS</span><strong>+54.04%</strong></article>
               <article><span>2014 USERS</span><strong>+54.13%</strong></article>
-              <article><span>SENSITIVITY UNITS</span><strong>+49.27%</strong></article>
+              <article><span>UNITS FROM ROWS &lt;100</span><strong>+49.27%</strong></article>
               <article className="quiet"><span>CROSS-DAY REPEAT</span><strong>0.0802%</strong></article>
             </div>
 

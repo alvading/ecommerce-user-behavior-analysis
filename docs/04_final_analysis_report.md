@@ -19,7 +19,7 @@ structure, and the limited customer signals available. The core table contains
 
 1. 2014 年交易记录和购买用户分别同比增长 54.04% 和 54.13%，增长主要来自
    更多购买用户，而不是购买频次提升。
-2. 原始购买件数同比增长 85.16%，但 `<100` 敏感性件数仅增长 49.27%。单笔
+2. 原始购买件数同比增长 85.16%，但 `<100` 口径购买件数仅增长 49.27%。单笔
    100 件及以上的记录贡献了总件数增量的 61.70%。
 3. `cat1=50008168` 是覆盖最广、最稳定的一级品类；前三个一级品类贡献了
    2013→2014 年 81.28% 的交易记录增量。
@@ -84,7 +84,7 @@ validated SQL, aggregated evidence, figures, and bilingual documentation.
 | 交易记录数 / Trade rows | `COUNT(*)` | 衡量交易活动规模 / Activity scale |
 | 购买用户数 / Purchasing users | `COUNT(DISTINCT user_id)` | 衡量用户覆盖 / User reach |
 | 原始购买件数 / Raw units | `SUM(buy_amount)` | 保留原始业务记录 / Raw recorded quantity |
-| 敏感性件数 / Sensitivity units | `SUM(CASE WHEN buy_amount < 100 THEN buy_amount ELSE 0 END)` | 判断结论是否被大数量记录改变 / Test high-quantity influence |
+| 购买件数（单条记录 `<100`）/ Units from rows `<100` | `SUM(CASE WHEN buy_amount < 100 THEN buy_amount ELSE 0 END)` | 判断结论是否被大数量记录改变 / Test high-quantity influence |
 | 跨日复购用户 / Cross-day repeat user | 至少两个不同购买日期 / At least two purchase dates | 避免把同日多商品误判为复购 / Avoid same-day misclassification |
 
 `100` 是敏感性分析阈值，不是异常值删除规则。缺乏订单类型和单位信息时，不能把
@@ -117,7 +117,7 @@ order type or unit definition, high-quantity rows cannot be labeled errors.
 | 一级品类 / Top-level categories | 6 |
 | 细分类目 / Detailed categories | 662 |
 | 原始购买件数 / Raw units | 76,250 |
-| 敏感性购买件数 / Sensitivity units | 45,755 |
+| 购买件数（单条记录 `<100`）/ Units from rows `<100` | 45,755 |
 
 交易记录仅比购买用户多 27，人均交易记录为 1.0009。这一结构预示复购信号很弱，
 后续用户级聚合也验证了这一判断。
@@ -133,8 +133,8 @@ and foreshadowing the weak repeat-purchase signal confirmed later.
 ![2014年度同比增长](../assets/figures/01_annual_growth.png)
 
 *图1：2014年交易活动指标与件数指标同比。原始件数增速明显偏离交易记录、用户和
-敏感性件数。 / Figure 1. Raw-unit growth diverges from activity and sensitivity
-metrics.*
+`<100`口径购买件数。 / Figure 1. Raw-unit growth diverges from activity and
+the `<100`-per-row view.*
 
 2014 年交易记录与用户增长基本一致，说明增长主要由用户规模扩大推动。原始件数
 增速比敏感性口径高 35.89 个百分点；高数量件数同比增长 155.43%，并贡献总件数
@@ -142,12 +142,12 @@ metrics.*
 
 ### 6.1 2014年11月高峰 | November 2014 peak
 
-![2014月度原始与敏感性件数](../assets/figures/02_monthly_sensitivity.png)
+![2014月度原始件数与单条记录小于100件口径](../assets/figures/02_monthly_sensitivity.png)
 
-*图2：2014年月度原始件数与敏感性件数。 / Figure 2. Monthly raw and
-sensitivity units in 2014.*
+*图2：2014年月度原始件数与购买件数（单条记录 `<100`）。 / Figure 2.
+Monthly raw units and units from rows below 100 in 2014.*
 
-2014 年 11 月有 1,833 条交易记录和 2,460 件敏感性购买件数，两项均为样本期
+2014 年 11 月有 1,833 条交易记录和 2,460 件 `<100` 口径购买件数，两项均为样本期
 最高，说明当月确有真实活动高峰。但原始 13,044 件中，仅一条 10,000 件记录就
 占 76.66%；当月 6 条高数量记录合计贡献 81.14% 的原始件数。
 
@@ -160,7 +160,7 @@ units, while retaining raw units as an auditable secondary view.
 ![一级品类指标对比](../assets/figures/03_category_comparison.png)
 
 *图3：一级品类份额矩阵。每一行固定代表一个 `cat1`，四列依次展示交易记录占比、
-原始件数占比、敏感性件数占比和品类内部高数量件数占比，所有条形采用统一的
+原始件数占比、`<100` 口径件数占比和品类内部高数量件数占比，所有条形采用统一的
 0–60%刻度。 / Figure 3. Top-level category share matrix using a shared 0–60%
 scale across four directly labeled measures.*
 
@@ -173,7 +173,7 @@ mark the two categories most affected by high quantities. Neutral separator
 lines keep the remaining categories easy to follow without competing with the
 main findings.
 
-`50008168` 贡献 41.69% 的交易记录和 32.37% 的敏感性件数，是覆盖最广、表现
+`50008168` 贡献 41.69% 的交易记录和 32.37% 的 `<100` 口径购买件数，是覆盖最广、表现
 最稳定的一级品类。`28` 和 `50014815` 的高数量件数分别占自身原始件数的
 52.15% 和 56.81%，仅用原始件数排序会改变对品类表现的判断。
 
@@ -280,7 +280,8 @@ the plausible matched-subsample window.*
 
 ### 11.1 指标治理 | Metric governance
 
-- 看板主要使用交易记录、购买用户和敏感性件数；原始件数作为可追溯对照。
+- 看板主要使用交易记录、购买用户和购买件数（单条记录 `<100`）；原始件数作为
+  可追溯对照。
 - 对单笔 100 件及以上记录建立审核标签，补充订单类型、计量单位和采购身份后再
   决定是否属于批量采购或数据异常。
 - 不把购买件数表述为销售额、收入或利润。
