@@ -112,7 +112,7 @@ order type or unit definition, high-quantity rows cannot be labeled errors.
 | 人口属性用户覆盖 | 953（3.18%） | 只能作为补充样本 / Supplementary only |
 
 高数量记录数量极少，但对总件数影响很大，因此后续所有涉及“件数”的结论均同时
-展示原始与敏感性口径。
+展示原始口径与`<100`对照口径。
 
 ## 5. 整体交易规模 | Overall transaction scale
 
@@ -139,17 +139,18 @@ and foreshadowing the weak repeat-purchase signal confirmed later.
 
 ![2014年度同比增长](../assets/figures/01_annual_growth.png)
 
-*图1：2014年交易活动指标与件数指标同比。原始件数增速明显偏离交易记录、用户和
-`<100`口径购买件数。 / Figure 1. Raw-unit growth diverges from activity and
-the `<100`-per-row view.*
+*图1：五张指标卡分别对比2013与2014年的实际值和同比变化。浅灰绿固定代表2013，
+深绿固定代表2014；珊瑚标签仅提示指标受到高数量记录影响。 / Figure 1. Five KPI
+cards compare 2013 and 2014 actual values and year-over-year changes. Coral
+labels identify metrics affected by high-quantity rows.*
 
 2014 年交易记录与用户增长基本一致，说明增长主要由用户规模扩大推动。原始件数
-增速比敏感性口径高 35.89 个百分点；高数量件数同比增长 155.43%，并贡献总件数
+增速比`<100`口径高 35.89 个百分点；高数量件数同比增长 155.43%，并贡献总件数
 增量的 61.70%。
 
 ### 6.1 2014年11月高峰 | November 2014 peak
 
-![2014月度原始件数与单条记录小于100件口径](../assets/figures/02_monthly_sensitivity.png)
+![2014月度原始购买件数与单条记录小于100的购买件数](../assets/figures/02_monthly_sensitivity.png)
 
 *图2：2014年月度原始件数与购买件数（单条记录 `<100`）。 / Figure 2.
 Monthly raw units and units from rows below 100 in 2014.*
@@ -200,10 +201,10 @@ main findings.
 
 ## 8. 细分类目集中度与二八结构 | Detailed-category concentration and Pareto structure
 
-![细分类目二八结构](../assets/figures/04_pareto_categories.png)
+![细分类目帕累托分析](../assets/figures/04_pareto_categories.png)
 
-*图4：按交易记录降序排列的细分类目累计贡献曲线。 / Figure 4. Cumulative
-trade-row contribution after ranking detailed categories.*
+*图4：按交易记录降序排列的细分类目柱形与累计贡献折线。 / Figure 4. Pareto
+chart combining ranked detailed-category trade rows and cumulative contribution.*
 
 这里的“二”和“八”被明确划分为：
 
@@ -269,14 +270,14 @@ and category analysis, but not robust lifecycle or retention modeling.
 
 ## 10. 人口属性补充分析 | Demographic supplement
 
-![匹配子样本购买阶段](../assets/figures/05_demographic_stages.png)
+![母婴生命周期购买阶段](../assets/figures/05_demographic_stages.png)
 
-*图5：合理日期窗口内的匹配子样本购买阶段。 / Figure 5. Purchase stages in
-the plausible matched-subsample window.*
+*图5：合理日期窗口内的母婴生命周期购买阶段。 / Figure 5. Maternal and infant
+lifecycle purchase stages within the plausible matched-subsample window.*
 
 婴儿信息只覆盖 953 名用户和 956 条交易。交易相对出生日期的月份差从 -25 到
 339；其中 54 条（5.65%）位于设定的主要解释范围之外。主要阶段分析使用 `-10`
-至 `71` 个月的 902 条记录：0–11个月占 34.26%，为最大阶段；12–23个月敏感性
+至 `71` 个月的 902 条记录：0–11个月占 34.26%，为最大阶段；12–23个月`<100`口径
 平均件数最高，为每条 1.70 件。
 
 男婴、女婴和未知性别分别占匹配用户的 51.31%、45.96% 和 2.73%。男女组前三个
